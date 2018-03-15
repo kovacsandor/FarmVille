@@ -1,14 +1,21 @@
-package component;
+package game;
 
 import kind.Action;
-import game.Setting;
-import game.Model;
+import view.Board;
 
-import java.util.List;
+import java.util.Scanner;
 
 public class Turn {
 
-    private List<Field> fieldsAvailable;
+//    private List<Field> fieldsAvailable;
+
+    public Turn() {
+        Board.draw(Model.board);
+        System.out.println("Press enter to continue...");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+        this.finish();
+    }
 
     public void executeAction(Action action) {
         // TODO
@@ -30,15 +37,15 @@ public class Turn {
     }
 
     public void finish() {
-        Model.day++;
         applyChanges();
+        Model.day++;
     }
 
-    public List<Field> getFieldsAvailable() {
-        return fieldsAvailable;
-    }
-
-    public void setFieldsAvailable(List<Field> fieldsAvailable) {
-        this.fieldsAvailable = fieldsAvailable;
-    }
+//    public List<Field> getFieldsAvailable() {
+//        return fieldsAvailable;
+//    }
+//
+//    public void setFieldsAvailable(List<Field> fieldsAvailable) {
+//        this.fieldsAvailable = fieldsAvailable;
+//    }
 }

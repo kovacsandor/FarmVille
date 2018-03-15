@@ -5,6 +5,7 @@ import game.Setting;
 public class Keeper {
 
     private int money = Setting.MONEY;
+
     private String name;
 
     public Keeper(String name) {
@@ -17,5 +18,9 @@ public class Keeper {
 
     public void setMoney(int money) {
         this.money = money;
+    }
+
+    public String getName() {
+        return name;
     }
 }

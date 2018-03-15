@@ -1,13 +1,16 @@
 package component;
 
 import constrain.Commodity;
+import game.Model;
 
 public abstract class Plant implements Commodity {
 
+    private int dayPlanted;
     private int price;
     private int ripenTime;
 
     protected Plant() {
+        this.dayPlanted = Model.day;
         initializePrice();
         initializeRipenTime();
     }
@@ -15,6 +18,10 @@ public abstract class Plant implements Commodity {
     protected abstract void initializePrice();
 
     protected abstract void initializeRipenTime();
+
+    public boolean isRipe() {
+        return Model.day - dayPlanted > ripenTime;
+    }
 
     public int getPrice() {
         return price;

@@ -30,11 +30,11 @@ public class Setting {
     public static final int COST_THRESHING_MACHINE = 150000;
     public static final int COST_TRACTOR = 50000;
     public static final int COST_WHEAT = 10;
-    public static final String CURRENCY = "Peták";
-    public static final int STARTING_DAY = 1;
+    public static final String CURRENCY = "petak";
     public static final int INCOME_FOWL_HOUSE = 100;
     public static final int INCOME_PIGPEN = 1000;
     public static final double INFECTION_CHANCE = 0.07;
+    public static final String KEEPER_NAME = "Player";
     public static final int MONEY = 100000;
     public static final int MONEY_BROKE = 0;
     public static final int MONEY_CRITICAL = 10000;
@@ -48,4 +48,5 @@ public class Setting {
     public static final int RIPEN_TIME_OATS = 24;
     public static final int RIPEN_TIME_RICE = 20;
     public static final int RIPEN_TIME_WHEAT = 30;
+    public static final int STARTING_DAY = 1;
 }

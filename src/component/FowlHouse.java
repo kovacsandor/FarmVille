@@ -1,8 +1,8 @@
 package component;
 
 import constrain.Commodity;
-import kind.Consumption;
 import game.Setting;
+import kind.Consumption;
 
 public class FowlHouse extends RaisingFacility {
 

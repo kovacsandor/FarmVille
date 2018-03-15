@@ -1,8 +1,8 @@
 package component;
 
 import constrain.Commodity;
-import kind.Permission;
 import game.Setting;
+import kind.Permission;
 
 public class FireStation extends Infrastructure {
 

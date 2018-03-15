@@ -8,10 +8,9 @@ public class Field implements Commodity {
     private final int coordinateX;
     private final int coordinateY;
     private boolean isActionExecuted;
-
     private Plant plant;
 
-    public Field(int coordinateX, int coordinateY){
+    public Field(int coordinateX, int coordinateY) {
         this.coordinateX = coordinateX;
         this.coordinateY = coordinateY;
     }

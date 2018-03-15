@@ -1,9 +1,9 @@
 package component;
 
 import constrain.Commodity;
+import game.Setting;
 import kind.Consumption;
 import kind.Permission;
-import game.Setting;
 
 public class Tractor extends Machine {
 
