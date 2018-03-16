@@ -7,8 +7,8 @@ public class Field implements Commodity {
 
     private final int coordinateX;
     private final int coordinateY;
-    private boolean isActionExecuted;
-    private Plant plant;
+    private boolean isActionUnderExecution;
+    private Installation installation;
 
     public Field(int coordinateX, int coordinateY) {
         this.coordinateX = coordinateX;
@@ -28,19 +28,20 @@ public class Field implements Commodity {
         return coordinateY;
     }
 
-    public boolean getIsActionExecuted() {
-        return isActionExecuted;
+    public boolean getIsActionUnderExecution() {
+        return isActionUnderExecution;
     }
 
-    public void setIsActionExecuted(boolean isActionExecuted) {
-        isActionExecuted = isActionExecuted;
+    public void setIsActionUnderExecution(boolean isActionUnderExecution) {
+        this.isActionUnderExecution = isActionUnderExecution;
     }
 
-    public Plant getPlant() {
-        return plant;
+    public Installation getInstallation() {
+        return installation;
     }
 
-    public void setPlant(Plant plant) {
-        this.plant = plant;
+    public void setInstallation(Installation installation) {
+        this.installation = installation;
+        //this.setIsActionUnderExecution(true);
     }
 }

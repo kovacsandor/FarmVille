@@ -7,8 +7,8 @@ import kind.Consumption;
 public class FowlHouse extends RaisingFacility {
 
     @Override
-    protected void initializeBuildTime() {
-        this.setBuildTime(Setting.BUILD_TIME_FOWL_HOUSE);
+    protected void initializeInstallationTime() {
+        setInstallationTime(Setting.BUILD_TIME_FOWL_HOUSE);
     }
 
     @Override

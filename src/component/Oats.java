@@ -11,8 +11,8 @@ public class Oats extends Plant {
     }
 
     @Override
-    protected void initializeRipenTime() {
-        this.setRipenTime(Setting.RIPEN_TIME_OATS);
+    protected void initializeInstallationTime() {
+        this.setInstallationTime(Setting.RIPEN_TIME_OATS);
     }
 
     @Override

@@ -11,8 +11,8 @@ public class Rice extends Plant {
     }
 
     @Override
-    protected void initializeRipenTime() {
-        this.setRipenTime(Setting.RIPEN_TIME_RICE);
+    protected void initializeInstallationTime() {
+        this.setInstallationTime(Setting.RIPEN_TIME_RICE);
     }
 
     @Override

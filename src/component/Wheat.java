@@ -11,8 +11,8 @@ public class Wheat extends Plant {
     }
 
     @Override
-    protected void initializeRipenTime() {
-        setRipenTime(Setting.RIPEN_TIME_WHEAT);
+    protected void initializeInstallationTime() {
+        setInstallationTime(Setting.RIPEN_TIME_WHEAT);
     }
 
     @Override

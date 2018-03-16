@@ -3,7 +3,6 @@ package component;
 import constrain.Commodity;
 import game.Setting;
 import kind.Consumption;
-import kind.Permission;
 
 public class Tractor extends Machine {
 
@@ -20,10 +19,5 @@ public class Tractor extends Machine {
     @Override
     public Consumption getConsumptionKind() {
         return Consumption.MONEY;
-    }
-
-    @Override
-    public Permission getPermission() {
-        return Permission.PLANT_MULTIPLE_FIELDS;
     }
 }

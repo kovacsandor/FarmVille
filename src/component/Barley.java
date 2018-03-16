@@ -11,8 +11,8 @@ public class Barley extends Plant {
     }
 
     @Override
-    protected void initializeRipenTime() {
-        this.setRipenTime(Setting.RIPEN_TIME_BARLEY);
+    protected void initializeInstallationTime() {
+        this.setInstallationTime(Setting.RIPEN_TIME_BARLEY);
     }
 
     @Override

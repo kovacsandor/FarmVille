@@ -1,7 +1,6 @@
 package game;
 
 import component.Field;
-import component.Keeper;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -15,7 +14,9 @@ public class Setup {
         String name = scanner.nextLine();
         Model.day = Setting.STARTING_DAY;
         Model.board = new ArrayList<>();
-        Model.keeper = new Keeper(name.length() > 0 ? name : Setting.KEEPER_NAME);
+        Model.inventories = new ArrayList<>();
+        Model.money = Setting.MONEY;
+        Model.name = name.length() > 0 ? name : Setting.KEEPER_NAME;
         Model.granary = new ArrayList<>();
         for (int i = 0; i < Setting.BOARD_SIZE; i++) {
             Model.board.add(new ArrayList<>());
@@ -23,5 +24,6 @@ public class Setup {
                 Model.board.get(i).add(new Field(i, j));
             }
         }
+        Model.permissions = new ArrayList<>();
     }
 }

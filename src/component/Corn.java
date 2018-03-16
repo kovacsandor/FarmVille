@@ -11,8 +11,8 @@ public class Corn extends Plant {
     }
 
     @Override
-    protected void initializeRipenTime() {
-        this.setRipenTime(Setting.RIPEN_TIME_CORN);
+    protected void initializeInstallationTime() {
+        this.setInstallationTime(Setting.RIPEN_TIME_CORN);
     }
 
     @Override

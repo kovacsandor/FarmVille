@@ -7,8 +7,8 @@ import kind.Consumption;
 public class Pigpen extends RaisingFacility {
 
     @Override
-    protected void initializeBuildTime() {
-        setBuildTime(Setting.BUILD_TIME_PIGPEN);
+    protected void initializeInstallationTime() {
+        setInstallationTime(Setting.BUILD_TIME_PIGPEN);
     }
 
     @Override
