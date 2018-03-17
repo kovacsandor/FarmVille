@@ -1,12 +1,23 @@
 package component;
 
-import constrain.Commodity;
+import constrain.Permissive;
 import game.Setting;
+import kind.Permission;
 
-public class FireExtinguisher extends Inventory {
+public class FireExtinguisher extends Inventory implements Permissive {
 
     @Override
-    public void pay() {
-        Commodity.recoup(Setting.COST_FIRE_EXTINGUISHER);
+    public int getCost() {
+        return Setting.COST_FIRE_EXTINGUISHER;
+    }
+
+    @Override
+    public Permission getPermission() {
+        return Permission.DECREASE_FIRE_CHANCE;
+    }
+
+    @Override
+    protected void initializePrecondition() {
+        setPrecondition(Permission.INVEST_ESTINGUISHER);
     }
 }

@@ -1,6 +1,5 @@
 package component;
 
-import constrain.Commodity;
 import game.Setting;
 
 public class Rice extends Plant {
@@ -16,7 +15,7 @@ public class Rice extends Plant {
     }
 
     @Override
-    public void pay() {
-        Commodity.recoup(Setting.COST_RICE);
+    public int getCost() {
+        return Setting.COST_RICE;
     }
 }

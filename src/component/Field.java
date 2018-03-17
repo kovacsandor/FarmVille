@@ -16,8 +16,8 @@ public class Field implements Commodity {
     }
 
     @Override
-    public void pay() {
-        Commodity.recoup(Setting.COST_FIELD);
+    public int getCost() {
+        return Setting.COST_FIELD;
     }
 
     public int getCoordinateX() {

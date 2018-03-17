@@ -1,6 +1,5 @@
 package component;
 
-import constrain.Commodity;
 import game.Setting;
 import kind.Consumption;
 
@@ -17,8 +16,8 @@ public class FowlHouse extends RaisingFacility {
     }
 
     @Override
-    public void pay() {
-        Commodity.recoup(Setting.COST_FOWL_HOUSE);
+    public int getCost() {
+        return Setting.COST_FOWL_HOUSE;
     }
 
     @Override

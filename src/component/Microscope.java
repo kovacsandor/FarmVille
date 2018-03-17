@@ -1,12 +1,23 @@
 package component;
 
-import constrain.Commodity;
+import constrain.Permissive;
 import game.Setting;
+import kind.Permission;
 
-public class Microscope extends Inventory {
+public class Microscope extends Inventory implements Permissive {
 
     @Override
-    public void pay() {
-        Commodity.recoup(Setting.COST_MICROSCOPE);
+    public int getCost() {
+        return Setting.COST_MICROSCOPE;
+    }
+
+    @Override
+    public Permission getPermission() {
+        return Permission.DECREASE_INFECTION_CHANCE_3;
+    }
+
+    @Override
+    protected void initializePrecondition() {
+        setPrecondition(Permission.RESEARCH);
     }
 }

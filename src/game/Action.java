@@ -11,14 +11,14 @@ import java.util.stream.Collectors;
 
 public class Action {
 
-    private boolean isFinishTurn = false;
+    private int dept = 0;
+    private boolean isTurnFinished = false;
 
     public Action() {
         Board.draw(Model.board);
         System.out.println("Choose an action...");
         Scanner scanner = new Scanner(System.in);
         handle(scanner.nextLine());
-        checkKeeperIsBroke();
     }
 
     private void handle(String ordinal) {
@@ -26,61 +26,34 @@ public class Action {
         try {
             action = kind.Action.values()[Integer.parseInt(ordinal) - 1];
         } catch (Throwable throwable) {
-
+            System.err.println(throwable);
         }
         switch (action) {
             case BUILD_GARAGE:
-                if (isInstalled(Garage.class)) {
-                    System.out.println("You can only have one garage built.");
-                } else {
-                    for (Field field : selectFields()) {
-                        if (!isInstalled(Garage.class) && isFree(field)) {
-                            field.setInstallation(new Garage());
-                            addPermission(Permission.INVEST_MACHINES);
-                        }
-                    }
-                }
+                install(new Garage());
                 break;
             case BUILD_FIRE_STATION:
-                for (Field field : selectFields()) {
-                    if (isFree(field)) {
-                        field.setInstallation(new FireStation());
-                        addPermission(Permission.INVEST_ESTINGUISHER);
-                    }
-                }
+                install(new FireStation());
                 break;
             case BUILD_FOWL_HOUSE:
-                for (Field field : selectFields()) {
-                    if (isFree(field)) {
-                        field.setInstallation(new FowlHouse());
-                    }
-                }
+                install(new FowlHouse());
                 break;
             case BUILD_LABORATORY:
-                for (Field field : selectFields()) {
-                    if (isFree(field)) {
-                        field.setInstallation(new Laboratory());
-                        addPermission(Permission.RESEARCH);
-                    }
-                }
+                install(new Laboratory());
                 break;
             case BUILD_PIGPEN:
-                for (Field field : selectFields()) {
-                    if (isFree(field)) {
-                        field.setInstallation(new Pigpen());
-                    }
-                }
+                install(new Pigpen());
                 break;
             case BUY_FIELD:
-                System.out.println("BUY_FIELD");
+                buyField();
                 break;
             case FINISH_TURN:
-                setIsFinishTurn(true);
+                setIsTurnFinished(true);
                 break;
             case HARVEST:
                 for (List<Field> fields : Model.board) {
                     for (Field field : fields) {
-                        if (isPlant(field.getInstallation()) && field.getInstallation().isReady()) {
+                        if (field.getInstallation() instanceof Plant && field.getInstallation().isReady()) {
                             Model.granary.add((Plant) field.getInstallation());
                             field.setIsActionUnderExecution(true);
                             field.setInstallation(null);
@@ -92,73 +65,37 @@ public class Action {
                 System.out.println("INVALID_ACTION");
                 break;
             case INVEST_FIRE_EXTINGUISHER:
-                if (isPermissionAdded(Permission.INVEST_ESTINGUISHER)) {
-                    Model.inventories.add(new FireExtinguisher());
-                    addPermission(Permission.DECREASE_FIRE_CHANCE);
-                }
+                buyInventory(new FireExtinguisher());
                 break;
             case INVEST_FIRE_PLUG:
-                if (isPermissionAdded(Permission.INVEST_ESTINGUISHER)) {
-                    Model.inventories.add(new FirePlug());
-                    addPermission(Permission.DECREASE_FIRE_CHANCE);
-                }
+                buyInventory(new FirePlug());
                 break;
             case INVEST_INCUBATOR:
-                if (isPermissionAdded(Permission.RESEARCH)) {
-                    Model.inventories.add(new Incubator());
-                    addPermission(Permission.DECREASE_INFECTION_CHANCE_2);
-                }
+                buyInventory(new Incubator());
                 break;
             case INVEST_MICROSCOPE:
-                if (isPermissionAdded(Permission.RESEARCH)) {
-                    Model.inventories.add(new Microscope());
-                    addPermission(Permission.DECREASE_INFECTION_CHANCE_3);
-                }
+                buyInventory(new Microscope());
                 break;
             case INVEST_THRESHING_MACHINE:
-                if (isPermissionAdded(Permission.INVEST_MACHINES)) {
-                    Model.inventories.add(new ThreshingMachine());
-                }
+                buyInventory(new ThreshingMachine());
                 break;
             case INVEST_TRACTOR:
-                if (isPermissionAdded(Permission.INVEST_MACHINES)) {
-                    Model.inventories.add(new Tractor());
-                }
+                buyInventory(new Tractor());
                 break;
             case PLANT_BARLEY:
-                for (Field field : selectFields()) {
-                    if (isFree(field)) {
-                        field.setInstallation(new Barley());
-                    }
-                }
+                install(new Barley());
                 break;
             case PLANT_CORN:
-                for (Field field : selectFields()) {
-                    if (isFree(field)) {
-                        field.setInstallation(new Corn());
-                    }
-                }
+                install(new Corn());
                 break;
             case PLANT_OATS:
-                for (Field field : selectFields()) {
-                    if (isFree(field)) {
-                        field.setInstallation(new Oats());
-                    }
-                }
+                install(new Oats());
                 break;
             case PLANT_RICE:
-                for (Field field : selectFields()) {
-                    if (isFree(field)) {
-                        field.setInstallation(new Rice());
-                    }
-                }
+                install(new Rice());
                 break;
             case PLANT_WHEAT:
-                for (Field field : selectFields()) {
-                    if (isFree(field)) {
-                        field.setInstallation(new Wheat());
-                    }
-                }
+                install(new Wheat());
                 break;
             case SELL_CROP:
                 List<Plant> removable = new ArrayList<>();
@@ -171,12 +108,41 @@ public class Action {
             default:
                 throw new RuntimeException("Invalid action.");
         }
-
     }
 
     private void addPermission(Permission permission) {
         if (Model.permissions.stream().filter(p -> p == permission).collect(Collectors.toList()).size() == 0) {
             Model.permissions.add(permission);
+        }
+    }
+
+    private void buyField() {
+        try {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("How many fields do you want to buy?");
+            int count = Integer.parseInt(scanner.nextLine());
+            int added = 0;
+            for (int i = 0; i < Setting.BOARD_MAX_SIZE; i++) {
+                if (added == count) {
+                    break;
+                }
+                if (Model.board.get(Model.board.size() - 1).size() == Setting.BOARD_MAX_SIZE && i < Setting.BOARD_MAX_SIZE) {
+                    Model.board.add(new ArrayList<>());
+                }
+                while (Model.board.get(i).size() < Setting.BOARD_MAX_SIZE && added < count) {
+                    Model.board.get(i).add(new Field(Model.board.get(i).size(), i));
+                    added++;
+                }
+            }
+        } catch (Throwable throwable) {
+            System.err.println(throwable);
+        }
+    }
+
+    private void buyInventory(Inventory inventory) {
+        if (isPermissionAdded(inventory.getPrecondition())) {
+            Model.inventories.add(inventory);
+            addPermission(inventory.getPermission());
         }
     }
 
@@ -212,7 +178,7 @@ public class Action {
         } else if ((input.trim().matches("[0-9]{1,2},[0-9]{1,2}"))) {
             String[] coordinates = input.trim().split(",");
             try {
-                result.add(Model.board.get(Integer.parseInt(coordinates[0])).get(Integer.parseInt(coordinates[1])));
+                result.add(Model.board.get(Integer.parseInt(coordinates[0]) - 1).get(Integer.parseInt(coordinates[1]) - 1));
             } catch (Throwable throwable) {
                 System.err.println(throwable);
             }
@@ -222,19 +188,24 @@ public class Action {
         return result;
     }
 
-    public void checkKeeperIsBroke() {
-        int money = Model.money;
-        if (money < Setting.MONEY_CRITICAL && money > Setting.MONEY_BROKE) {
-            System.out.println("You have a critical amount of money: " + money + ".");
-        } else if (money < Setting.MONEY_BROKE) {
-            System.out.println("You have " + money + " " + Setting.CURRENCY + ".");
-            System.out.println("You broke! GAME OVER");
-            System.exit(0);
-        }
-    }
-
     private boolean isFree(Field field) {
         return field.getInstallation() == null && !field.getIsActionUnderExecution();
+    }
+
+    private void install(Installation installation) {
+        if (installation instanceof Garage && isInstalled(Garage.class)) {
+            System.out.println("You can only have one garage built.");
+        } else {
+            for (Field field : selectFields()) {
+                if (isFree(field) && !(installation instanceof Garage && isInstalled(Garage.class))) {
+                    field.setInstallation(installation);
+                    dept += installation.getCost();
+                    if (installation instanceof Infrastructure) {
+                        addPermission(((Infrastructure) installation).getPermission());
+                    }
+                }
+            }
+        }
     }
 
     private boolean isInstalled(Class c) {
@@ -249,21 +220,25 @@ public class Action {
         return result;
     }
 
-    private boolean isPlant(Installation installation) {
-        return installation != null && (
-                installation.getClass() == Barley.class
-                        || installation.getClass() == Corn.class
-                        || installation.getClass() == Oats.class
-                        || installation.getClass() == Rice.class
-                        || installation.getClass() == Wheat.class
-        );
+//    private boolean isPlant(Installation installation) {
+//        return installation != null && (
+//                installation.getClass() == Barley.class
+//                        || installation.getClass() == Corn.class
+//                        || installation.getClass() == Oats.class
+//                        || installation.getClass() == Rice.class
+//                        || installation.getClass() == Wheat.class
+//        );
+//    }
+
+    public int getDept() {
+        return dept;
     }
 
-    public boolean getIsFinishTurn() {
-        return isFinishTurn;
+    public boolean getIsTurnFinished() {
+        return isTurnFinished;
     }
 
-    private void setIsFinishTurn(boolean isFinishTurn) {
-        this.isFinishTurn = isFinishTurn;
+    private void setIsTurnFinished(boolean isTurnFinished) {
+        this.isTurnFinished = isTurnFinished;
     }
 }

@@ -1,6 +1,5 @@
 package component;
 
-import constrain.Commodity;
 import game.Setting;
 import kind.Consumption;
 
@@ -17,8 +16,8 @@ public class Pigpen extends RaisingFacility {
     }
 
     @Override
-    public void pay() {
-        Commodity.recoup(Setting.COST_PIGPEN);
+    public int getCost() {
+        return Setting.COST_PIGPEN;
     }
 
     @Override

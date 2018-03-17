@@ -9,6 +9,8 @@ public class Setting {
     public static final int BUILD_TIME_GARAGE = 20;
     public static final int BUILD_TIME_LABORATORY = 15;
     public static final int BUILD_TIME_PIGPEN = 15;
+    public static final double CHANCE_FIRE = 0.02;
+    public static final double CHANCE_INFECTION = 0.07;
     public static final int CONSUMPTION_FOWL_HOUSE = 10;
     public static final int CONSUMPTION_PIGPEN = 30;
     public static final int CONSUMPTION_THRESHING_MACHINE = 20;
@@ -33,7 +35,6 @@ public class Setting {
     public static final String CURRENCY = "HPK";
     public static final int INCOME_FOWL_HOUSE = 100;
     public static final int INCOME_PIGPEN = 1000;
-    public static final double INFECTION_CHANCE = 0.07;
     public static final String KEEPER_NAME = "Player";
     public static final int MONEY = 100000;
     public static final int MONEY_BROKE = 0;

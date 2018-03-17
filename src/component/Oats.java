@@ -16,7 +16,7 @@ public class Oats extends Plant {
     }
 
     @Override
-    public void pay() {
-        Commodity.recoup(Setting.COST_OATS);
+    public int getCost() {
+        return Setting.COST_OATS;
     }
 }

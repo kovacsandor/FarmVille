@@ -1,9 +1,9 @@
 package component;
 
-import constrain.Commodity;
 import game.Setting;
+import kind.Permission;
 
-public class Garage extends Building {
+public class Garage extends Infrastructure {
 
     @Override
     protected void initializeInstallationTime() {
@@ -11,7 +11,12 @@ public class Garage extends Building {
     }
 
     @Override
-    public void pay() {
-        Commodity.recoup(Setting.COST_GARAGE);
+    public int getCost() {
+        return Setting.COST_GARAGE;
+    }
+
+    @Override
+    public Permission getPermission() {
+        return Permission.INVEST_MACHINES;
     }
 }

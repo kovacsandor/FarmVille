@@ -7,11 +7,13 @@ import java.util.List;
 
 public class Turn {
 
+    private int dept = 0;
+    private boolean isTurnFinished = false;
+
     public Turn() {
-        boolean isTurnFinished = false;
         while (!isTurnFinished) {
             game.Action action = new game.Action();
-            isTurnFinished = action.getIsFinishTurn();
+            isTurnFinished = action.getIsTurnFinished();
         }
         this.finish();
     }
@@ -22,6 +24,17 @@ public class Turn {
 
     private void applyChanges() {
         // TODO
+    }
+
+    public void checkKeeperIsBroke() {
+        int money = Model.money;
+        if (money < Setting.MONEY_CRITICAL && money > Setting.MONEY_BROKE) {
+            System.out.println("You have a critical amount of money: " + money + ".");
+        } else if (money < Setting.MONEY_BROKE) {
+            System.out.println("You have " + money + " " + Setting.CURRENCY + ".");
+            System.out.println("You broke! GAME OVER");
+            System.exit(0);
+        }
     }
 
     private void finish() {

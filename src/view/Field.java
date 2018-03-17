@@ -11,45 +11,45 @@ public class Field {
             result = "X ";
         } else if (installation == null) {
             result = "[]";
-        } else if (installation.getClass() == Barley.class && installation.isReady()) {
+        } else if (installation instanceof Barley && installation.isReady()) {
             result = "B ";
-        } else if (installation.getClass() == Barley.class) {
+        } else if (installation instanceof Barley) {
             result = "b ";
-        } else if (installation.getClass() == Corn.class && installation.isReady()) {
+        } else if (installation instanceof Corn && installation.isReady()) {
             result = "C ";
-        } else if (installation.getClass() == Corn.class) {
+        } else if (installation instanceof Corn) {
             result = "c ";
-        } else if (installation.getClass() == FireStation.class && installation.isReady()) {
+        } else if (installation instanceof FireStation && installation.isReady()) {
             result = "S ";
-        } else if (installation.getClass() == FireStation.class) {
+        } else if (installation instanceof FireStation) {
             result = "s ";
-        } else if (installation.getClass() == FowlHouse.class && installation.isReady()) {
+        } else if (installation instanceof FowlHouse && installation.isReady()) {
             result = "F ";
-        } else if (installation.getClass() == FowlHouse.class) {
+        } else if (installation instanceof FowlHouse) {
             result = "f ";
-        } else if (installation.getClass() == Garage.class && installation.isReady()) {
+        } else if (installation instanceof Garage && installation.isReady()) {
             result = "G ";
-        } else if (installation.getClass() == Garage.class) {
+        } else if (installation instanceof Garage) {
             result = "g ";
-        } else if (installation.getClass() == Laboratory.class && installation.isReady()) {
+        } else if (installation instanceof Laboratory && installation.isReady()) {
             result = "L ";
-        } else if (installation.getClass() == Laboratory.class) {
+        } else if (installation instanceof Laboratory) {
             result = "l ";
-        } else if (installation.getClass() == Oats.class && installation.isReady()) {
+        } else if (installation instanceof Oats && installation.isReady()) {
             result = "O ";
-        } else if (installation.getClass() == Oats.class) {
+        } else if (installation instanceof Oats) {
             result = "o ";
-        } else if (installation.getClass() == Pigpen.class && installation.isReady()) {
+        } else if (installation instanceof Pigpen && installation.isReady()) {
             result = "P ";
-        } else if (installation.getClass() == Pigpen.class) {
+        } else if (installation instanceof Pigpen) {
             result = "p ";
-        } else if (installation.getClass() == Rice.class && installation.isReady()) {
+        } else if (installation instanceof Rice && installation.isReady()) {
             result = "R ";
-        } else if (installation.getClass() == Rice.class) {
+        } else if (installation instanceof Rice) {
             result = "r ";
-        } else if (installation.getClass() == Wheat.class && installation.isReady()) {
+        } else if (installation instanceof Wheat && installation.isReady()) {
             result = "W ";
-        } else if (installation.getClass() == Wheat.class) {
+        } else if (installation instanceof Wheat) {
             result = "w ";
         } else {
             throw new RuntimeException("Unexpected scenario.");
