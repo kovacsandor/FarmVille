@@ -1,8 +1,20 @@
 package game;
 
+import component.Field;
+import component.Installation;
+import component.ThreshingMachine;
+import component.Tractor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 class Helper {
+
+    static boolean isFree(Field field) {
+        return field.getInstallation() == null && !field.getIsActionUnderExecution();
+    }
 
     static boolean isInventoryAdded(Class[] inventories) {
         boolean result = false;
@@ -11,6 +23,74 @@ class Helper {
                 result = true;
                 break;
             }
+        }
+        return result;
+    }
+
+    static boolean isInstallationAdded(Class c) {
+        boolean result = false;
+        for (List<component.Field> fields : Model.board) {
+            for (component.Field field : fields) {
+                Installation installation = field.getInstallation();
+                if (installation != null && installation.getClass() == c) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    static boolean isInstallationReady(Class c) {
+        boolean result = false;
+        for (List<Field> fields : Model.board) {
+            for (component.Field field : fields) {
+                Installation installation = field.getInstallation();
+                if (installation != null && installation.getClass() == c && installation.isReady()) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    static List<Field> selectFields() {
+        List<Field> result = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        boolean isMultiple = isInventoryAdded(new Class[]{ThreshingMachine.class, Tractor.class});
+        System.out.println("Selelect a single field with pattern 'x,y'"
+                + (isMultiple ? " or multiple fields with pattern 'x-y-x,y'" : ""));
+        String input = scanner.nextLine();
+        if (input.trim().matches("[0-9]{1,2},[0-9]{1,2}-[0-9]{1,2},[0-9]{1,2}") && isMultiple) {
+            String[] temp = input.trim().split("-");
+            String[][] coordinates = new String[2][];
+            coordinates[0] = temp[0].split(",");
+            coordinates[1] = temp[1].split(",");
+            try {
+                for (List<Field> fields : Model.board) {
+                    for (Field field : fields) {
+                        for (int x = Integer.parseInt(coordinates[0][0]) - 1; x < Integer.parseInt(coordinates[1][0]); x++) {
+                            for (int y = Integer.parseInt(coordinates[0][1]) - 1; y < Integer.parseInt(coordinates[1][1]); y++) {
+                                if (field.getCoordinateX() == x && field.getCoordinateY() == y) {
+                                    result.add(field);
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Throwable throwable) {
+                System.err.println(throwable);
+            }
+        } else if ((input.trim().matches("[0-9]{1,2},[0-9]{1,2}"))) {
+            String[] coordinates = input.trim().split(",");
+            try {
+                result.add(Model.board.get(Integer.parseInt(coordinates[0]) - 1).get(Integer.parseInt(coordinates[1]) - 1));
+            } catch (Throwable throwable) {
+                System.err.println(throwable);
+            }
+        } else {
+            System.out.println("Invalid field coordinates: " + input);
         }
         return result;
     }

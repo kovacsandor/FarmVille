@@ -2,7 +2,7 @@ package component;
 
 import game.Setting;
 
-public class Laboratory extends Infrastructure {
+public class Laboratory extends Building {
 
     @Override
     protected int getInstallationTime() {

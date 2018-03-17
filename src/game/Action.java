@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static game.Helper.isInventoryAdded;
+import static game.Helper.*;
 
 public class Action {
 
@@ -16,15 +16,15 @@ public class Action {
 
     Action() {
         Board.draw(Model.board);
-        System.out.println("Choose an action...");
-        Scanner scanner = new Scanner(System.in);
-        handle(scanner.nextLine());
+        handle();
     }
 
-    private void handle(String ordinal) {
+    private void handle() {
         kind.Action action = kind.Action.INVALID_ACTION;
         try {
-            action = kind.Action.values()[Integer.parseInt(ordinal) - 1];
+            System.out.println("Choose an action...");
+            Scanner scanner = new Scanner(System.in);
+            action = kind.Action.values()[Integer.parseInt(scanner.nextLine()) - 1];
         } catch (Throwable throwable) {
             System.err.println(throwable);
         }
@@ -48,39 +48,31 @@ public class Action {
                 buyField();
                 break;
             case FINISH_TURN:
-                setIsTurnFinished(true);
+                isTurnFinished = true;
                 break;
             case HARVEST:
-                for (List<Field> fields : Model.board) {
-                    for (Field field : fields) {
-                        if (field.getInstallation() instanceof Plant && field.getInstallation().isReady()) {
-                            Model.granary.add((Plant) field.getInstallation());
-                            field.setIsActionUnderExecution(true);
-                            field.setInstallation(null);
-                        }
-                    }
-                }
+                harvest();
                 break;
             case INVALID_ACTION:
-                System.out.println("INVALID_ACTION");
+                System.out.println("Invalid action.");
                 break;
             case INVEST_FIRE_EXTINGUISHER:
-                buyInventory(new FireExtinguisher());
+                buy(new FireExtinguisher());
                 break;
             case INVEST_FIRE_PLUG:
-                buyInventory(new FirePlug());
+                buy(new FirePlug());
                 break;
             case INVEST_INCUBATOR:
-                buyInventory(new Incubator());
+                buy(new Incubator());
                 break;
             case INVEST_MICROSCOPE:
-                buyInventory(new Microscope());
+                buy(new Microscope());
                 break;
             case INVEST_THRESHING_MACHINE:
-                buyInventory(new ThreshingMachine());
+                buy(new ThreshingMachine());
                 break;
             case INVEST_TRACTOR:
-                buyInventory(new Tractor());
+                buy(new Tractor());
                 break;
             case PLANT_BARLEY:
                 plant(new Barley());
@@ -98,22 +90,39 @@ public class Action {
                 plant(new Wheat());
                 break;
             case SELL_CROP:
-                List<Plant> removable = new ArrayList<>();
-                for (Plant plant : Model.granary) {
-                    dept -= plant.getPrice();
-                    removable.add(plant);
-                }
-                Model.granary.removeAll(removable);
+                sell();
                 break;
             default:
                 throw new RuntimeException("Invalid action.");
         }
     }
 
+    private void build(Installation installation) {
+        if (installation instanceof Garage && isInstallationAdded(Garage.class)) {
+            System.out.println("You can only have one garage built.");
+        } else {
+            for (Field field : selectFields()) {
+                if (isFree(field) && !(installation instanceof Garage && isInstallationAdded(Garage.class))) {
+                    field.setInstallation(installation);
+                    dept += installation.getCost();
+                }
+            }
+        }
+    }
+
+    private void buy(Inventory inventory) {
+        if (isInstallationReady(inventory.getDependecy())) {
+            Model.inventories.add(inventory);
+            dept += inventory.getCost();
+        } else {
+            System.out.println("No " + inventory.getDependecy().getSimpleName() + "found which is ready.");
+        }
+    }
+
     private void buyField() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("How many fields do you want to buy?");
         try {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("How many fields do you want to buy?");
             int count = Integer.parseInt(scanner.nextLine());
             int added = 0;
             for (int i = 0; i < Setting.BOARD_MAX_SIZE; i++) {
@@ -135,66 +144,13 @@ public class Action {
         }
     }
 
-    private void buyInventory(Inventory inventory) {
-        if (isAnyOfInstallationReady(inventory.getDependecy())) {
-            Model.inventories.add(inventory);
-            dept += inventory.getCost();
-        } else {
-            System.out.println("No " + inventory.getDependecy().getSimpleName() + "found which is ready.");
-        }
-    }
-
-    private List<Field> selectFields() {
-        List<Field> result = new ArrayList<>();
-        Scanner scanner = new Scanner(System.in);
-        boolean isMultiple = isInventoryAdded(new Class[]{ThreshingMachine.class, Tractor.class});
-        System.out.println("Selelect a single field with pattern 'x,y'" + (isMultiple ? " or multiple fields with pattern 'x-y-x,y'" : ""));
-        String input = scanner.nextLine();
-        if (input.trim().matches("[0-9]{1,2},[0-9]{1,2}-[0-9]{1,2},[0-9]{1,2}") && isMultiple) {
-            String[] temp = input.trim().split("-");
-            String[][] coordinates = new String[2][];
-            coordinates[0] = temp[0].split(",");
-            coordinates[1] = temp[1].split(",");
-            try {
-                for (List<Field> fields : Model.board) {
-                    for (Field field : fields) {
-                        for (int x = Integer.parseInt(coordinates[0][0]) - 1; x < Integer.parseInt(coordinates[1][0]); x++) {
-                            for (int y = Integer.parseInt(coordinates[0][1]) - 1; y < Integer.parseInt(coordinates[1][1]); y++) {
-                                if (field.getCoordinateX() == x && field.getCoordinateY() == y) {
-                                    result.add(field);
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (Throwable throwable) {
-                System.err.println(throwable);
-            }
-        } else if ((input.trim().matches("[0-9]{1,2},[0-9]{1,2}"))) {
-            String[] coordinates = input.trim().split(",");
-            try {
-                result.add(Model.board.get(Integer.parseInt(coordinates[0]) - 1).get(Integer.parseInt(coordinates[1]) - 1));
-            } catch (Throwable throwable) {
-                System.err.println(throwable);
-            }
-        } else {
-            System.out.println("Invalid field coordinates: " + input);
-        }
-        return result;
-    }
-
-    private boolean isFree(Field field) {
-        return field.getInstallation() == null && !field.getIsActionUnderExecution();
-    }
-
-    private void build(Installation installation) {
-        if (installation instanceof Garage && isInstalled(Garage.class)) {
-            System.out.println("You can only have one garage built.");
-        } else {
-            for (Field field : selectFields()) {
-                if (isFree(field) && !(installation instanceof Garage && isInstalled(Garage.class))) {
-                    field.setInstallation(installation);
-                    dept += installation.getCost();
+    private void harvest() {
+        for (List<Field> fields : Model.board) {
+            for (Field field : fields) {
+                if (field.getInstallation() instanceof Plant && field.getInstallation().isReady()) {
+                    Model.granary.add((Plant) field.getInstallation());
+                    field.setIsActionUnderExecution(true);
+                    field.setInstallation(null);
                 }
             }
         }
@@ -222,43 +178,20 @@ public class Action {
         }
     }
 
-    private boolean isAnyOfInstallationReady(Class c) {
-        boolean result = false;
-        for (List<component.Field> fields : Model.board) {
-            for (component.Field field : fields) {
-                Installation installation = field.getInstallation();
-                if (installation != null && installation.getClass() == c && installation.isReady()) {
-                    result = true;
-                    break;
-                }
-            }
+    private void sell() {
+        List<Plant> removable = new ArrayList<>();
+        for (Plant plant : Model.granary) {
+            dept -= plant.getPrice();
+            removable.add(plant);
         }
-        return result;
-    }
-
-    private boolean isInstalled(Class c) {
-        boolean result = false;
-        for (List<component.Field> fields : Model.board) {
-            for (component.Field field : fields) {
-                Installation installation = field.getInstallation();
-                if (installation != null && installation.getClass() == c) {
-                    result = true;
-                    break;
-                }
-            }
-        }
-        return result;
+        Model.granary.removeAll(removable);
     }
 
     public int getDept() {
         return dept;
     }
 
-    public boolean getIsTurnFinished() {
+    public boolean isTurnFinished() {
         return isTurnFinished;
-    }
-
-    private void setIsTurnFinished(boolean isTurnFinished) {
-        this.isTurnFinished = isTurnFinished;
     }
 }

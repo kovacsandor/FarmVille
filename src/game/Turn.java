@@ -2,24 +2,38 @@ package game;
 
 import component.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static game.Helper.isInventoryAdded;
-
 public class Turn {
 
+    private int dept = 0;
+    private boolean isTurnFinished = false;
+
     public Turn() {
-        this.start();
-        int dept = 0;
-        boolean isTurnFinished = false;
+        onStart();
+        whileActionsExecuting();
+        onFinish();
+    }
+
+    private void whileActionsExecuting() {
         while (!isTurnFinished) {
-            game.Action action = new game.Action();
-            isTurnFinished = action.getIsTurnFinished();
+            Action action = new Action();
+            isTurnFinished = action.isTurnFinished();
             dept += action.getDept();
         }
-        this.finish(dept);
+    }
+
+    private void onFinish() {
+        Model.money -= dept;
+        checkKeeperIsBroke();
+        setFieldsUnderExecutionAvailable();
+        Model.day++;
+    }
+
+    private void onStart() {
+        new VisMaior();
+        produce();
     }
 
     private void checkKeeperIsBroke() {
@@ -33,98 +47,26 @@ public class Turn {
         }
     }
 
-    private void start() {
-        consume();
-        visMaior();
-    }
-
-    private void finish(int debt) {
-        Model.money -= debt;
-        checkKeeperIsBroke();
-        setFieldsUnderExecutionAvailable();
-        Model.day++;
-    }
-
-    private void visMaior() {
-        List<Field> fieldsOnFire = new ArrayList<>();
-        double fireChance = Setting.CHANCE_FIRE;
-        double infectionChance = Setting.CHANCE_INFECTION;
-        if (isInventoryAdded(new Class[]{FireExtinguisher.class})) {
-            fireChance -= Setting.DECREASE_FIRE_CHANCE_EXTINGUISHER;
-        }
-        if (isInventoryAdded(new Class[]{FirePlug.class})) {
-            fireChance -= Setting.DECREASE_FIRE_CHANCE_EXTINGUISHER;
-        }
-        if (isInventoryAdded(new Class[]{Incubator.class})) {
-            infectionChance -= Setting.DECREASE_INFECTION_CHANCE_INCUBATOR;
-        }
-        if (isInventoryAdded(new Class[]{Microscope.class})) {
-            infectionChance -= Setting.DECREASE_INFECTION_CHANCE_MICROSCOPE;
-        }
+    private void produce() {
         for (List<Field> fields : Model.board) {
             for (Field field : fields) {
                 Installation installation = field.getInstallation();
-                if (installation != null && (installation instanceof Plant && Math.random() < infectionChance)) {
-                    System.out.println(installation.getClass().getSimpleName() + " was infected and had to be removed.");
-                    field.setIsActionUnderExecution(true);
-                    field.setInstallation(null);
-                }
-            }
-        }
-        for (List<Field> fields : Model.board) {
-            for (Field field : fields) {
-                Installation installation = field.getInstallation();
-                if (installation != null && (installation instanceof Plant && Math.random() < fireChance)) {
-                    System.out.println(installation.getClass().getSimpleName() + " was caught on fire and had been burned down and the surrounding fields as well");
-                    fieldsOnFire.add(field);
-                }
-            }
-        }
-        for (Field fieldOnFire : fieldsOnFire) {
-            if (fieldOnFire != null) {
-                for (List<Field> fields : Model.board) {
-                    for (Field field : fields) {
-                        Installation installation = field.getInstallation();
-                        if (installation != null && (installation instanceof Plant)
-                                && field.getCoordinateX() > fieldOnFire.getCoordinateX() - 2
-                                && field.getCoordinateX() < fieldOnFire.getCoordinateX() + 2
-                                && field.getCoordinateY() > fieldOnFire.getCoordinateY() - 2
-                                && field.getCoordinateY() < fieldOnFire.getCoordinateY() + 2
-                                ) {
-                            field.setIsActionUnderExecution(true);
-                            field.setInstallation(null);
+                if (installation != null && (installation instanceof RaisingFacility)) {
+                    List<Plant> corns = Model.granary.stream().filter(plant ->
+                            plant.getClass() == Corn.class).collect(Collectors.toList());
+                    RaisingFacility facility = (RaisingFacility) installation;
+                    if (corns.size() > facility.getConsumption() - 1) {
+                        for (int i = 0; i < facility.getConsumption(); i++) {
+                            corns.remove(0);
                         }
+                        Model.money += facility.getIncome();
+                        System.out.println(facility.getClass().getSimpleName()
+                                + " made " + facility.getIncome()
+                                + " " + Setting.CURRENCY + "."
+                        );
                     }
                 }
             }
-        }
-    }
-
-    private void consume() {
-        for (List<Field> fields : Model.board) {
-            for (Field field : fields) {
-                Installation installation = field.getInstallation();
-                if (installation != null && (installation instanceof FowlHouse)) {
-                    makeIncome((FowlHouse) installation);
-                }
-                if (installation != null && (installation instanceof Pigpen)) {
-                    makeIncome((Pigpen) installation);
-                }
-            }
-        }
-    }
-
-    private List<Plant> getCornFromGrannary() {
-        return Model.granary.stream().filter(plant -> plant.getClass() == Corn.class).collect(Collectors.toList());
-    }
-
-    private void makeIncome(RaisingFacility raisingFacility) {
-        if (getCornFromGrannary().size() > raisingFacility.getConsumption() - 1) {
-            for (int i = 0; i < raisingFacility.getConsumption(); i++) {
-                getCornFromGrannary().remove(0);
-            }
-            Model.money += raisingFacility.getIncome();
-            System.out.println(raisingFacility.getClass().getSimpleName() + " made " + raisingFacility.getIncome() + " " + Setting.CURRENCY + ".");
         }
     }
 

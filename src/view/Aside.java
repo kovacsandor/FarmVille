@@ -49,14 +49,16 @@ public class Aside {
         list.add("PLANT_RICE - " + (kind.Action.PLANT_RICE.ordinal() + 1));
         list.add("PLANT_WHEAT - " + (kind.Action.PLANT_WHEAT.ordinal() + 1));
         list.add("SELL_CROP - " + (kind.Action.SELL_CROP.ordinal() + 1));
-//        list.add("");
-//        list.add("[] - Empty field | X - Under execution");
-//        list.add("B, b - Barley | C, c - Corn | O, o - Oats");
-//        list.add("R, r - Rice | W, w - Wheat");
-//        list.add("");
-//        list.add("F, f - Fowl house | P, p - Pigpen");
-//        list.add("S, s - Fire station | G, g - Garage");
-//        list.add("L, l - Laboratory");
+        if (Model.inventories.size() == 0) {
+            list.add("");
+            list.add("[] - Empty field | X - Under execution");
+            list.add("B, b - Barley | C, c - Corn | O, o - Oats");
+            list.add("R, r - Rice | W, w - Wheat");
+            list.add("");
+            list.add("F, f - Fowl house | P, p - Pigpen");
+            list.add("S, s - Fire station | G, g - Garage");
+            list.add("L, l - Laboratory");
+        }
         if (list.size() > line) {
             System.out.print(list.get(line));
         }

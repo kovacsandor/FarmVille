@@ -2,7 +2,7 @@ package component;
 
 import game.Setting;
 
-public class FireStation extends Infrastructure {
+public class FireStation extends Building {
 
     @Override
     protected int getInstallationTime() {
