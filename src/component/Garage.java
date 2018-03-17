@@ -6,8 +6,8 @@ import kind.Permission;
 public class Garage extends Infrastructure {
 
     @Override
-    protected void initializeInstallationTime() {
-        setInstallationTime(Setting.BUILD_TIME_GARAGE);
+    protected int getInstallationTime() {
+        return Setting.BUILD_TIME_GARAGE;
     }
 
     @Override

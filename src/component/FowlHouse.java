@@ -6,13 +6,13 @@ import kind.Consumption;
 public class FowlHouse extends RaisingFacility {
 
     @Override
-    protected void initializeInstallationTime() {
-        setInstallationTime(Setting.BUILD_TIME_FOWL_HOUSE);
+    protected int getInstallationTime() {
+        return Setting.BUILD_TIME_FOWL_HOUSE;
     }
 
     @Override
-    protected void initializeIncome() {
-        this.setIncome(Setting.INCOME_FOWL_HOUSE);
+    public int getIncome() {
+        return Setting.INCOME_FOWL_HOUSE;
     }
 
     @Override

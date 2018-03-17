@@ -27,7 +27,7 @@ public class ThreshingMachine extends Machine {
     }
 
     @Override
-    protected void initializePrecondition() {
-        setPrecondition(Permission.INVEST_MACHINES);
+    public Permission getPrecondition() {
+        return Permission.INVEST_MACHINES;
     }
 }

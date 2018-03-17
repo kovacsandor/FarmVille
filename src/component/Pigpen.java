@@ -6,13 +6,13 @@ import kind.Consumption;
 public class Pigpen extends RaisingFacility {
 
     @Override
-    protected void initializeInstallationTime() {
-        setInstallationTime(Setting.BUILD_TIME_PIGPEN);
+    protected int getInstallationTime() {
+        return Setting.BUILD_TIME_PIGPEN;
     }
 
     @Override
-    protected void initializeIncome() {
-        this.setIncome(Setting.INCOME_PIGPEN);
+    public int getIncome() {
+        return Setting.INCOME_PIGPEN;
     }
 
     @Override

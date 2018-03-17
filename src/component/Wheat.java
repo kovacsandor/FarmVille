@@ -5,13 +5,13 @@ import game.Setting;
 public class Wheat extends Plant {
 
     @Override
-    protected void initializePrice() {
-        setPrice(Setting.PRICE_WHEAT);
+    public int getPrice() {
+        return Setting.PRICE_WHEAT;
     }
 
     @Override
-    protected void initializeInstallationTime() {
-        setInstallationTime(Setting.RIPEN_TIME_WHEAT);
+    protected int getInstallationTime() {
+        return Setting.RIPEN_TIME_WHEAT;
     }
 
     @Override

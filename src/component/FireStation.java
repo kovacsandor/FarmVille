@@ -6,8 +6,8 @@ import kind.Permission;
 public class FireStation extends Infrastructure {
 
     @Override
-    protected void initializeInstallationTime() {
-        setInstallationTime(Setting.BUILD_TIME_FIRE_STATION);
+    protected int getInstallationTime() {
+        return Setting.BUILD_TIME_FIRE_STATION;
     }
 
     @Override

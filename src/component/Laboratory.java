@@ -6,8 +6,8 @@ import kind.Permission;
 public class Laboratory extends Infrastructure {
 
     @Override
-    protected void initializeInstallationTime() {
-        setInstallationTime(Setting.BUILD_TIME_LABORATORY);
+    protected int getInstallationTime() {
+        return Setting.BUILD_TIME_LABORATORY;
     }
 
     @Override

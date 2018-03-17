@@ -17,7 +17,7 @@ public class FireExtinguisher extends Inventory implements Permissive {
     }
 
     @Override
-    protected void initializePrecondition() {
-        setPrecondition(Permission.INVEST_ESTINGUISHER);
+    public Permission getPrecondition() {
+        return Permission.INVEST_ESTINGUISHER;
     }
 }

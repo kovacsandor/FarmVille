@@ -17,7 +17,7 @@ public class Microscope extends Inventory implements Permissive {
     }
 
     @Override
-    protected void initializePrecondition() {
-        setPrecondition(Permission.RESEARCH);
+    public Permission getPrecondition() {
+        return Permission.RESEARCH;
     }
 }
