@@ -33,6 +33,9 @@ public class Setting {
     public static final int COST_TRACTOR = 50000;
     public static final int COST_WHEAT = 10;
     public static final String CURRENCY = "HPK";
+    public static final double DECREASE_FIRE_CHANCE_EXTINGUISHER = 0.01;
+    public static final double DECREASE_INFECTION_CHANCE_INCUBATOR = 0.02;
+    public static final double DECREASE_INFECTION_CHANCE_MICROSCOPE = 0.03;
     public static final int INCOME_FOWL_HOUSE = 100;
     public static final int INCOME_PIGPEN = 1000;
     public static final String KEEPER_NAME = "Player";

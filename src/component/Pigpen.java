@@ -1,7 +1,6 @@
 package component;
 
 import game.Setting;
-import kind.Consumption;
 
 public class Pigpen extends RaisingFacility {
 
@@ -23,10 +22,5 @@ public class Pigpen extends RaisingFacility {
     @Override
     public int getConsumption() {
         return Setting.CONSUMPTION_PIGPEN;
-    }
-
-    @Override
-    public Consumption getConsumptionKind() {
-        return Consumption.CORN;
     }
 }

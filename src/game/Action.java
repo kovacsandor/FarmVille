@@ -1,20 +1,20 @@
 package game;
 
 import component.*;
-import kind.Permission;
 import view.Board;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
+
+import static game.Helper.isInventoryAdded;
 
 public class Action {
 
     private int dept = 0;
     private boolean isTurnFinished = false;
 
-    public Action() {
+    Action() {
         Board.draw(Model.board);
         System.out.println("Choose an action...");
         Scanner scanner = new Scanner(System.in);
@@ -30,19 +30,19 @@ public class Action {
         }
         switch (action) {
             case BUILD_GARAGE:
-                install(new Garage());
+                build(new Garage());
                 break;
             case BUILD_FIRE_STATION:
-                install(new FireStation());
+                build(new FireStation());
                 break;
             case BUILD_FOWL_HOUSE:
-                install(new FowlHouse());
+                build(new FowlHouse());
                 break;
             case BUILD_LABORATORY:
-                install(new Laboratory());
+                build(new Laboratory());
                 break;
             case BUILD_PIGPEN:
-                install(new Pigpen());
+                build(new Pigpen());
                 break;
             case BUY_FIELD:
                 buyField();
@@ -83,36 +83,30 @@ public class Action {
                 buyInventory(new Tractor());
                 break;
             case PLANT_BARLEY:
-                install(new Barley());
+                plant(new Barley());
                 break;
             case PLANT_CORN:
-                install(new Corn());
+                plant(new Corn());
                 break;
             case PLANT_OATS:
-                install(new Oats());
+                plant(new Oats());
                 break;
             case PLANT_RICE:
-                install(new Rice());
+                plant(new Rice());
                 break;
             case PLANT_WHEAT:
-                install(new Wheat());
+                plant(new Wheat());
                 break;
             case SELL_CROP:
                 List<Plant> removable = new ArrayList<>();
                 for (Plant plant : Model.granary) {
-                    Model.money += plant.getPrice();
+                    dept -= plant.getPrice();
                     removable.add(plant);
                 }
                 Model.granary.removeAll(removable);
                 break;
             default:
                 throw new RuntimeException("Invalid action.");
-        }
-    }
-
-    private void addPermission(Permission permission) {
-        if (Model.permissions.stream().filter(p -> p == permission).collect(Collectors.toList()).size() == 0) {
-            Model.permissions.add(permission);
         }
     }
 
@@ -126,11 +120,13 @@ public class Action {
                 if (added == count) {
                     break;
                 }
-                if (Model.board.get(Model.board.size() - 1).size() == Setting.BOARD_MAX_SIZE && i < Setting.BOARD_MAX_SIZE) {
+                if (Model.board.get(Model.board.size() - 1).size() == Setting.BOARD_MAX_SIZE) {
                     Model.board.add(new ArrayList<>());
                 }
                 while (Model.board.get(i).size() < Setting.BOARD_MAX_SIZE && added < count) {
-                    Model.board.get(i).add(new Field(Model.board.get(i).size(), i));
+                    Field field = new Field(Model.board.get(i).size(), i);
+                    Model.board.get(i).add(field);
+                    dept += field.getCost();
                     added++;
                 }
             }
@@ -140,22 +136,21 @@ public class Action {
     }
 
     private void buyInventory(Inventory inventory) {
-        if (isPermissionAdded(inventory.getPrecondition())) {
+        if (isAnyOfInstallationReady(inventory.getDependecy())) {
             Model.inventories.add(inventory);
-            addPermission(inventory.getPermission());
+            dept += inventory.getCost();
+        } else {
+            System.out.println("No " + inventory.getDependecy().getSimpleName() + "found which is ready.");
         }
-    }
-
-    private boolean isPermissionAdded(Permission permission) {
-        return Model.permissions.stream().filter(p -> p == permission).collect(Collectors.toList()).size() == 1;
     }
 
     private List<Field> selectFields() {
         List<Field> result = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Selelect single field with pattern 'x,y' or multiple fields with pattern 'x-y-x,y':");
+        boolean isMultiple = isInventoryAdded(new Class[]{ThreshingMachine.class, Tractor.class});
+        System.out.println("Selelect a single field with pattern 'x,y'" + (isMultiple ? " or multiple fields with pattern 'x-y-x,y'" : ""));
         String input = scanner.nextLine();
-        if (input.trim().matches("[0-9]{1,2},[0-9]{1,2}-[0-9]{1,2},[0-9]{1,2}")) {
+        if (input.trim().matches("[0-9]{1,2},[0-9]{1,2}-[0-9]{1,2},[0-9]{1,2}") && isMultiple) {
             String[] temp = input.trim().split("-");
             String[][] coordinates = new String[2][];
             coordinates[0] = temp[0].split(",");
@@ -192,7 +187,7 @@ public class Action {
         return field.getInstallation() == null && !field.getIsActionUnderExecution();
     }
 
-    private void install(Installation installation) {
+    private void build(Installation installation) {
         if (installation instanceof Garage && isInstalled(Garage.class)) {
             System.out.println("You can only have one garage built.");
         } else {
@@ -200,35 +195,60 @@ public class Action {
                 if (isFree(field) && !(installation instanceof Garage && isInstalled(Garage.class))) {
                     field.setInstallation(installation);
                     dept += installation.getCost();
-                    if (installation instanceof Infrastructure) {
-                        addPermission(((Infrastructure) installation).getPermission());
-                    }
                 }
             }
         }
     }
 
-    private boolean isInstalled(Class c) {
+    private void plant(Installation installation) {
+        List<Field> fields = selectFields();
+        for (Field field : fields) {
+            if (isFree(field)) {
+                field.setInstallation(installation);
+                dept += installation.getCost();
+            }
+        }
+        if (fields.size() > 1) {
+            for (Inventory inventory : Model.inventories) {
+                if (inventory instanceof Tractor) {
+                    dept += fields.size() * ((Tractor) inventory).getConsumption();
+                    break;
+                }
+                if (inventory instanceof ThreshingMachine) {
+                    dept += fields.size() * ((ThreshingMachine) inventory).getConsumption();
+                    break;
+                }
+            }
+        }
+    }
+
+    private boolean isAnyOfInstallationReady(Class c) {
         boolean result = false;
         for (List<component.Field> fields : Model.board) {
             for (component.Field field : fields) {
-                if (field.getInstallation() != null && field.getInstallation().getClass() == c) {
+                Installation installation = field.getInstallation();
+                if (installation != null && installation.getClass() == c && installation.isReady()) {
                     result = true;
+                    break;
                 }
             }
         }
         return result;
     }
 
-//    private boolean isPlant(Installation installation) {
-//        return installation != null && (
-//                installation.getClass() == Barley.class
-//                        || installation.getClass() == Corn.class
-//                        || installation.getClass() == Oats.class
-//                        || installation.getClass() == Rice.class
-//                        || installation.getClass() == Wheat.class
-//        );
-//    }
+    private boolean isInstalled(Class c) {
+        boolean result = false;
+        for (List<component.Field> fields : Model.board) {
+            for (component.Field field : fields) {
+                Installation installation = field.getInstallation();
+                if (installation != null && installation.getClass() == c) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
 
     public int getDept() {
         return dept;

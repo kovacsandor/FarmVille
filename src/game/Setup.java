@@ -24,6 +24,5 @@ public class Setup {
                 Model.board.get(i).add(new Field(i, j));
             }
         }
-        Model.permissions = new ArrayList<>();
     }
 }

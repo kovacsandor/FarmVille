@@ -1,10 +1,8 @@
 package component;
 
-import constrain.Permissive;
 import game.Setting;
-import kind.Permission;
 
-public class Microscope extends Inventory implements Permissive {
+public class Microscope extends Inventory {
 
     @Override
     public int getCost() {
@@ -12,12 +10,7 @@ public class Microscope extends Inventory implements Permissive {
     }
 
     @Override
-    public Permission getPermission() {
-        return Permission.DECREASE_INFECTION_CHANCE_3;
-    }
-
-    @Override
-    public Permission getPrecondition() {
-        return Permission.RESEARCH;
+    public Class getDependecy() {
+        return Laboratory.class;
     }
 }

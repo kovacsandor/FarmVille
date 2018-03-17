@@ -1,10 +1,8 @@
 package component;
 
-import constrain.Permissive;
 import game.Setting;
-import kind.Permission;
 
-public class FirePlug extends Inventory implements Permissive {
+public class FirePlug extends Inventory {
 
     @Override
     public int getCost() {
@@ -12,12 +10,7 @@ public class FirePlug extends Inventory implements Permissive {
     }
 
     @Override
-    public Permission getPermission() {
-        return Permission.DECREASE_FIRE_CHANCE;
-    }
-
-    @Override
-    public Permission getPrecondition() {
-        return Permission.INVEST_ESTINGUISHER;
+    public Class getDependecy() {
+        return FireStation.class;
     }
 }

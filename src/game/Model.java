@@ -3,7 +3,6 @@ package game;
 import component.Field;
 import component.Inventory;
 import component.Plant;
-import kind.Permission;
 
 import java.util.List;
 
@@ -15,5 +14,4 @@ public class Model {
     public static List<Inventory> inventories;
     public static int money;
     public static String name;
-    public static List<Permission> permissions;
 }

@@ -1,7 +1,6 @@
 package component;
 
 import game.Setting;
-import kind.Consumption;
 
 public class FowlHouse extends RaisingFacility {
 
@@ -23,10 +22,5 @@ public class FowlHouse extends RaisingFacility {
     @Override
     public int getConsumption() {
         return Setting.CONSUMPTION_FOWL_HOUSE;
-    }
-
-    @Override
-    public Consumption getConsumptionKind() {
-        return Consumption.CORN;
     }
 }

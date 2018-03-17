@@ -1,8 +1,6 @@
 package component;
 
 import game.Setting;
-import kind.Consumption;
-import kind.Permission;
 
 public class ThreshingMachine extends Machine {
 
@@ -17,17 +15,7 @@ public class ThreshingMachine extends Machine {
     }
 
     @Override
-    public Consumption getConsumptionKind() {
-        return Consumption.MONEY;
-    }
-
-    @Override
-    public Permission getPermission() {
-        return Permission.PLANT_MULTIPLE_FIELDS;
-    }
-
-    @Override
-    public Permission getPrecondition() {
-        return Permission.INVEST_MACHINES;
+    public Class getDependecy() {
+        return Garage.class;
     }
 }
