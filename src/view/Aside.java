@@ -49,7 +49,7 @@ public class Aside {
         list.add("PLANT_RICE - " + (kind.Action.PLANT_RICE.ordinal() + 1));
         list.add("PLANT_WHEAT - " + (kind.Action.PLANT_WHEAT.ordinal() + 1));
         list.add("SELL_CROP - " + (kind.Action.SELL_CROP.ordinal() + 1));
-        if (Model.inventories.size() == 0) {
+        if (list.size() < 26) {
             list.add("");
             list.add("[] - Empty field | X - Under execution");
             list.add("B, b - Barley | C, c - Corn | O, o - Oats");

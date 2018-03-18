@@ -2,8 +2,6 @@ package game;
 
 import component.Field;
 import component.Installation;
-import component.ThreshingMachine;
-import component.Tractor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +9,16 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 class Helper {
+
+    static <T, U> List<T> get(Class<T> type, List<U> list) {
+        List<T> result = new ArrayList<>();
+        for (U item : list) {
+            if (item.getClass() == type) {
+                result.add((T) item);
+            }
+        }
+        return result;
+    }
 
     static boolean isFree(Field field) {
         return field.getInstallation() == null && !field.getIsActionUnderExecution();
@@ -55,14 +63,13 @@ class Helper {
         return result;
     }
 
-    static List<Field> selectFields() {
+    static List<Field> selectFields(boolean isMultipleAllowed) {
         List<Field> result = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
-        boolean isMultiple = isInventoryAdded(new Class[]{ThreshingMachine.class, Tractor.class});
         System.out.println("Selelect a single field with pattern 'x,y'"
-                + (isMultiple ? " or multiple fields with pattern 'x-y-x,y'" : ""));
+                + (isMultipleAllowed ? " or multiple fields with pattern 'x-y-x,y'" : ""));
         String input = scanner.nextLine();
-        if (input.trim().matches("[0-9]{1,2},[0-9]{1,2}-[0-9]{1,2},[0-9]{1,2}") && isMultiple) {
+        if (input.trim().matches("[0-9]{1,2},[0-9]{1,2}-[0-9]{1,2},[0-9]{1,2}") && isMultipleAllowed) {
             String[] temp = input.trim().split("-");
             String[][] coordinates = new String[2][];
             coordinates[0] = temp[0].split(",");

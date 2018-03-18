@@ -101,7 +101,7 @@ public class Action {
         if (installation instanceof Garage && isInstallationAdded(Garage.class)) {
             System.out.println("You can only have one garage built.");
         } else {
-            for (Field field : selectFields()) {
+            for (Field field : selectFields(!(installation instanceof Garage))) {
                 if (isFree(field) && !(installation instanceof Garage && isInstallationAdded(Garage.class))) {
                     field.setInstallation(installation);
                     dept += installation.getCost();
@@ -115,7 +115,7 @@ public class Action {
             Model.inventories.add(inventory);
             dept += inventory.getCost();
         } else {
-            System.out.println("No " + inventory.getDependecy().getSimpleName() + "found which is ready.");
+            System.out.println("No " + inventory.getDependecy().getSimpleName() + " found which is ready.");
         }
     }
 
@@ -145,19 +145,21 @@ public class Action {
     }
 
     private void harvest() {
-        for (List<Field> fields : Model.board) {
-            for (Field field : fields) {
-                if (field.getInstallation() instanceof Plant && field.getInstallation().isReady()) {
-                    Model.granary.add((Plant) field.getInstallation());
-                    field.setIsActionUnderExecution(true);
-                    field.setInstallation(null);
-                }
+        List<Field> fields = selectFields(isInventoryAdded(new Class[]{ThreshingMachine.class}));
+        for (Field field : fields) {
+            if (field.getInstallation() instanceof Plant && field.getInstallation().isReady()) {
+                Model.granary.add((Plant) field.getInstallation());
+                field.setIsActionUnderExecution(true);
+                field.setInstallation(null);
             }
+        }
+        if (fields.size() > 1) {
+            dept += fields.size() * get(ThreshingMachine.class, Model.inventories).get(0).getConsumption();
         }
     }
 
     private void plant(Installation installation) {
-        List<Field> fields = selectFields();
+        List<Field> fields = selectFields(isInventoryAdded(new Class[]{Tractor.class}));
         for (Field field : fields) {
             if (isFree(field)) {
                 field.setInstallation(installation);
@@ -165,16 +167,7 @@ public class Action {
             }
         }
         if (fields.size() > 1) {
-            for (Inventory inventory : Model.inventories) {
-                if (inventory instanceof Tractor) {
-                    dept += fields.size() * ((Tractor) inventory).getConsumption();
-                    break;
-                }
-                if (inventory instanceof ThreshingMachine) {
-                    dept += fields.size() * ((ThreshingMachine) inventory).getConsumption();
-                    break;
-                }
-            }
+            dept += fields.size() * get(Tractor.class, Model.inventories).get(0).getConsumption();
         }
     }
 
