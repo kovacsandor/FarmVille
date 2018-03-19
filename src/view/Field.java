@@ -4,6 +4,11 @@ import component.*;
 
 public class Field {
 
+    /**
+     * <p>Draws a Field.</p>
+     *
+     * @param field - the Field to be drawn
+     */
     public static String draw(component.Field field) {
         String result;
         Installation installation = field.getInstallation();

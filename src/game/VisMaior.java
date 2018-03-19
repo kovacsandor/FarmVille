@@ -18,6 +18,9 @@ class VisMaior {
         fire();
     }
 
+    /**
+     * <p>Applies modifiers to decrease the chance of Vis Maior.</p>
+     */
     private void applyModifiers() {
         if (isInventoryAdded(new Class[]{FireExtinguisher.class})) {
             chanceOfFire -= Setting.DECREASE_FIRE_CHANCE_EXTINGUISHER;
@@ -33,6 +36,9 @@ class VisMaior {
         }
     }
 
+    /**
+     * <p>Simulates the occurrence of fire.</p>
+     */
     private void fire() {
         List<Field> fieldsOnFire = new ArrayList<>();
         for (List<Field> fields : Model.board) {
@@ -64,6 +70,9 @@ class VisMaior {
         }
     }
 
+    /**
+     * <p>Simulates the occurrence of infection.</p>
+     */
     private void infection() {
         for (List<Field> fields : Model.board) {
             for (Field field : fields) {

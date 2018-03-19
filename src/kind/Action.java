@@ -1,6 +1,8 @@
 package kind;
 
-
+/**
+ * <p>A list of actions.</p>
+ */
 public enum Action {
     BUILD_GARAGE,
     BUILD_FIRE_STATION,

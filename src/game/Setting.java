@@ -1,5 +1,8 @@
 package game;
 
+/**
+ * <p>Stores all the constants of the game.</p>
+ */
 public class Setting {
 
     public static final int BOARD_MAX_SIZE = 50;
@@ -39,7 +42,7 @@ public class Setting {
     public static final int INCOME_FOWL_HOUSE = 100;
     public static final int INCOME_PIGPEN = 1000;
     public static final String KEEPER_NAME = "Player";
-    public static final int MONEY = 1000000; //100000
+    public static final int MONEY = 100000;
     public static final int MONEY_BROKE = 0;
     public static final int MONEY_CRITICAL = 10000;
     public static final int PRICE_CORN = 50;

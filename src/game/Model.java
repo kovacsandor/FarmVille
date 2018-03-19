@@ -6,6 +6,9 @@ import component.Plant;
 
 import java.util.List;
 
+/**
+ * <p>Stores the state of the game.</p>
+ */
 public class Model {
 
     public static List<List<Field>> board;

@@ -2,6 +2,9 @@ package component;
 
 import constrain.Consumptive;
 
-public abstract class Machine extends Inventory implements Consumptive {
+/**
+ * <p>An Invetory that consumes.</p>
+ */
+abstract class Machine extends Inventory implements Consumptive {
 
 }

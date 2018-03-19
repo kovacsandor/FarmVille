@@ -10,6 +10,11 @@ import java.util.List;
 
 public class Aside {
 
+    /**
+     * <p>Attaches aside information to the board.</p>
+     *
+     * @param line - the current line
+     */
     public static void draw(int line) {
 
         List<String> list = new ArrayList<>();

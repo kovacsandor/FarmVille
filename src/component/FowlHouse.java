@@ -2,6 +2,9 @@ package component;
 
 import game.Setting;
 
+/**
+ * <p>Main component of the game.</p>
+ */
 public class FowlHouse extends RaisingFacility {
 
     @Override

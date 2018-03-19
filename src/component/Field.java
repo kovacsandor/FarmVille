@@ -3,6 +3,9 @@ package component;
 import constrain.Commodity;
 import game.Setting;
 
+/**
+ * <p>Main component of the game.</p>
+ */
 public class Field implements Commodity {
 
     private final int coordinateX;
@@ -42,6 +45,5 @@ public class Field implements Commodity {
 
     public void setInstallation(Installation installation) {
         this.installation = installation;
-        //this.setIsActionUnderExecution(true);
     }
 }

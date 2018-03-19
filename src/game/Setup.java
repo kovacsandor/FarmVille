@@ -5,6 +5,9 @@ import component.Field;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * <p>Sets the defaults to the game.</p>
+ */
 public class Setup {
 
     public Setup() {

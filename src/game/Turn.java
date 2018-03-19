@@ -16,6 +16,9 @@ public class Turn {
         onFinish();
     }
 
+    /**
+     * <p>Keeps doing new actions while the turn is not set to finished.</p>
+     */
     private void whileActionsExecuting() {
         while (!isTurnFinished) {
             Action action = new Action();
@@ -24,6 +27,9 @@ public class Turn {
         }
     }
 
+    /**
+     * <p>Groups actions to be executed on turn finish.</p>
+     */
     private void onFinish() {
         Model.money -= dept;
         checkKeeperIsBroke();
@@ -31,11 +37,17 @@ public class Turn {
         Model.day++;
     }
 
+    /**
+     * <p>Groups actions to be executed on turn start.</p>
+     */
     private void onStart() {
         new VisMaior();
         produce();
     }
 
+    /**
+     * <p>Checks if <i>the Keeper</i> is broke and exits game if so.</p>
+     */
     private void checkKeeperIsBroke() {
         int money = Model.money;
         if (money < Setting.MONEY_CRITICAL && money > Setting.MONEY_BROKE) {
@@ -47,11 +59,14 @@ public class Turn {
         }
     }
 
+    /**
+     * <p>Makes income of all built RaisingFacilities if there is enough corn in the granary to do so.</p>
+     */
     private void produce() {
         for (List<Field> fields : Model.board) {
             for (Field field : fields) {
                 Installation installation = field.getInstallation();
-                if (installation != null && (installation instanceof RaisingFacility)) {
+                if (installation != null && (installation instanceof RaisingFacility) && installation.isReady()) {
                     List<Plant> corns = Model.granary.stream().filter(plant ->
                             plant.getClass() == Corn.class).collect(Collectors.toList());
                     RaisingFacility facility = (RaisingFacility) installation;
@@ -70,6 +85,9 @@ public class Turn {
         }
     }
 
+    /**
+     * <p>Sets fields under execution available.</p>
+     */
     private void setFieldsUnderExecutionAvailable() {
         for (List<Field> fields : Model.board) {
             for (Field field : fields) {

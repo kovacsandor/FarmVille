@@ -6,6 +6,11 @@ import java.util.List;
 
 public class Board {
 
+    /**
+     * <p>Draws a board.</p>
+     *
+     * @param board - a two dimensional array of Fields
+     */
     public static void draw(List<List<Field>> board) {
         int extraLine = 0;
         boolean isMaxLengthSet = false;

@@ -19,11 +19,14 @@ public class Action {
         handle();
     }
 
+    /**
+     * <p>Asks <i>the Keeper</i> to select and action and executes it.</p>
+     */
     private void handle() {
         kind.Action action = kind.Action.INVALID_ACTION;
+        System.out.println("Choose an action...");
+        Scanner scanner = new Scanner(System.in);
         try {
-            System.out.println("Choose an action...");
-            Scanner scanner = new Scanner(System.in);
             action = kind.Action.values()[Integer.parseInt(scanner.nextLine()) - 1];
         } catch (Throwable throwable) {
             System.err.println(throwable);
@@ -97,6 +100,11 @@ public class Action {
         }
     }
 
+    /**
+     * <p>Builds an <code>Installation</code> unless it is a <code>Garage</code> and has already been built.</p>
+     *
+     * @param installation - the installation to be built
+     */
     private void build(Installation installation) {
         if (installation instanceof Garage && isInstallationAdded(Garage.class)) {
             System.out.println("You can only have one garage built.");
@@ -110,6 +118,11 @@ public class Action {
         }
     }
 
+    /**
+     * <p>Checks if the inventory has a valid precondition and buys it.</p>
+     *
+     * @param inventory - the inventory to be bought
+     */
     private void buy(Inventory inventory) {
         if (isInstallationReady(inventory.getDependecy())) {
             Model.inventories.add(inventory);
@@ -119,31 +132,41 @@ public class Action {
         }
     }
 
+    /**
+     * <p>Asks <i>the Keeper</i> to select fields to buy. It iterates through the selected fields and buys them if the
+     * doesn't get larger than the allowed maximum.</p>
+     */
     private void buyField() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("How many fields do you want to buy?");
+        int buyCount = 0;
         try {
-            int count = Integer.parseInt(scanner.nextLine());
-            int added = 0;
-            for (int i = 0; i < Setting.BOARD_MAX_SIZE; i++) {
-                if (added == count) {
-                    break;
-                }
-                if (Model.board.get(Model.board.size() - 1).size() == Setting.BOARD_MAX_SIZE) {
-                    Model.board.add(new ArrayList<>());
-                }
-                while (Model.board.get(i).size() < Setting.BOARD_MAX_SIZE && added < count) {
-                    Field field = new Field(Model.board.get(i).size(), i);
-                    Model.board.get(i).add(field);
-                    dept += field.getCost();
-                    added++;
-                }
-            }
+            buyCount = Integer.parseInt(scanner.nextLine());
         } catch (Throwable throwable) {
             System.err.println(throwable);
         }
+        for (int addedCount = 0, index = 0; index < Setting.BOARD_MAX_SIZE; addedCount++, index++) {
+            if (addedCount == buyCount) {
+                break;
+            }
+            if (Model.board.get(Model.board.size() - 1).size() == Setting.BOARD_MAX_SIZE && Model.board.size() < Setting.BOARD_MAX_SIZE) {
+                Model.board.add(new ArrayList<>());
+            }
+            while (Model.board.get(index).size() < Setting.BOARD_MAX_SIZE && addedCount < buyCount) {
+                Field field = new Field(Model.board.get(index).size(), index);
+                Model.board.get(index).add(field);
+                dept += field.getCost();
+            }
+        }
     }
 
+    /**
+     * <p>Asks <i>the Keeper</i> to select fields to harvest. It iterates through the selected fields and checks if the
+     * fields are containing plant installations and if so, checks whether the plants are ripe. Puts the ripe plants to
+     * the granary.</p>
+     * <p>
+     * <p>If <i>the Keeper</i> selected multiple fields it applies the consumption of the <code>ThreshingMachine</code>.</p>
+     */
     private void harvest() {
         List<Field> fields = selectFields(isInventoryAdded(new Class[]{ThreshingMachine.class}));
         for (Field field : fields) {
@@ -158,6 +181,14 @@ public class Action {
         }
     }
 
+    /**
+     * <p>Asks <i>the Keeper</i> to select fields to plant on. It iterates through the selected fields and checks if the
+     * fields are free to plant on and if so, plants the given installation <i>- a plant</i>.</p>
+     * <p>
+     * <p>If <i>the Keeper</i> selected multiple fields it applies the consumption of the <code>Tractor</code>.</p>
+     *
+     * @param installation - the installation to be planted
+     */
     private void plant(Installation installation) {
         List<Field> fields = selectFields(isInventoryAdded(new Class[]{Tractor.class}));
         for (Field field : fields) {
@@ -171,6 +202,9 @@ public class Action {
         }
     }
 
+    /**
+     * <p>Sells all plants stored in the granary.</p>
+     */
     private void sell() {
         List<Plant> removable = new ArrayList<>();
         for (Plant plant : Model.granary) {

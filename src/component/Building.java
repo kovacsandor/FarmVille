@@ -1,5 +1,8 @@
 package component;
 
-public abstract class Building extends Installation {
+/**
+ * <p>Groups buildings - only semantic</p>
+ */
+abstract class Building extends Installation {
 
 }
