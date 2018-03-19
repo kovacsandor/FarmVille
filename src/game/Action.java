@@ -164,7 +164,7 @@ public class Action {
      * <p>Asks <i>the Keeper</i> to select fields to harvest. It iterates through the selected fields and checks if the
      * fields are containing plant installations and if so, checks whether the plants are ripe. Puts the ripe plants to
      * the granary.</p>
-     * <p>
+     * 
      * <p>If <i>the Keeper</i> selected multiple fields it applies the consumption of the <code>ThreshingMachine</code>.</p>
      */
     private void harvest() {
@@ -184,7 +184,7 @@ public class Action {
     /**
      * <p>Asks <i>the Keeper</i> to select fields to plant on. It iterates through the selected fields and checks if the
      * fields are free to plant on and if so, plants the given installation <i>- a plant</i>.</p>
-     * <p>
+     * 
      * <p>If <i>the Keeper</i> selected multiple fields it applies the consumption of the <code>Tractor</code>.</p>
      *
      * @param installation - the installation to be planted
