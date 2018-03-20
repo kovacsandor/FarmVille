@@ -145,7 +145,7 @@ public class Action {
         } catch (Throwable throwable) {
             System.err.println(throwable);
         }
-        for (int addedCount = 0, index = 0; index < Setting.BOARD_MAX_SIZE; addedCount++, index++) {
+        for (int addedCount = 0, index = 0; index < Setting.BOARD_MAX_SIZE; index++) {
             if (addedCount == buyCount) {
                 break;
             }
@@ -156,6 +156,7 @@ public class Action {
                 Field field = new Field(Model.board.get(index).size(), index);
                 Model.board.get(index).add(field);
                 dept += field.getCost();
+                addedCount++;
             }
         }
     }

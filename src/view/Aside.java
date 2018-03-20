@@ -34,26 +34,63 @@ public class Aside {
             }
         }
         list.add("");
-        list.add("BUILD_GARAGE - " + (kind.Action.BUILD_GARAGE.ordinal() + 1));
-        list.add("BUILD_FIRE_STATION - " + (kind.Action.BUILD_FIRE_STATION.ordinal() + 1));
-        list.add("BUILD_FOWL_HOUSE - " + (kind.Action.BUILD_FOWL_HOUSE.ordinal() + 1));
-        list.add("BUILD_LABORATORY - " + (kind.Action.BUILD_LABORATORY.ordinal() + 1));
-        list.add("BUILD_PIGPEN - " + (kind.Action.BUILD_PIGPEN.ordinal() + 1));
-        list.add("BUY_FIELD - " + (kind.Action.BUY_FIELD.ordinal() + 1));
-        list.add("FINISH_TURN - " + (kind.Action.FINISH_TURN.ordinal() + 1));
-        list.add("HARVEST - " + (kind.Action.HARVEST.ordinal() + 1));
-        list.add("INVEST_FIRE_EXTINGUISHER - " + (kind.Action.INVEST_FIRE_EXTINGUISHER.ordinal() + 1));
-        list.add("INVEST_FIRE_PLUG - " + (kind.Action.INVEST_FIRE_PLUG.ordinal() + 1));
-        list.add("INVEST_INCUBATOR - " + (kind.Action.INVEST_INCUBATOR.ordinal() + 1));
-        list.add("INVEST_MICROSCOPE - " + (kind.Action.INVEST_MICROSCOPE.ordinal() + 1));
-        list.add("INVEST_THRESHING_MACHINE - " + (kind.Action.INVEST_THRESHING_MACHINE.ordinal() + 1));
-        list.add("INVEST_TRACTOR - " + (kind.Action.INVEST_TRACTOR.ordinal() + 1));
-        list.add("PLANT_BARLEY - " + (kind.Action.PLANT_BARLEY.ordinal() + 1));
-        list.add("PLANT_CORN - " + (kind.Action.PLANT_CORN.ordinal() + 1));
-        list.add("PLANT_OATS - " + (kind.Action.PLANT_OATS.ordinal() + 1));
-        list.add("PLANT_RICE - " + (kind.Action.PLANT_RICE.ordinal() + 1));
-        list.add("PLANT_WHEAT - " + (kind.Action.PLANT_WHEAT.ordinal() + 1));
-        list.add("SELL_CROP - " + (kind.Action.SELL_CROP.ordinal() + 1));
+        list.add("Command " + String.format("%2d", (kind.Action.BUILD_GARAGE.ordinal() + 1))
+                + " | " + kind.Action.BUILD_GARAGE
+                + " - " + String.format("%,d", Setting.COST_GARAGE) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.BUILD_FIRE_STATION.ordinal() + 1))
+                + " | " + kind.Action.BUILD_FIRE_STATION
+                + " - " + String.format("%,d", Setting.COST_FIRE_STATION) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.BUILD_FOWL_HOUSE.ordinal() + 1))
+                + " | " + kind.Action.BUILD_FOWL_HOUSE
+                + " - " + String.format("%,d", Setting.COST_FOWL_HOUSE) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.BUILD_LABORATORY.ordinal() + 1))
+                + " | " + kind.Action.BUILD_LABORATORY
+                + " - " + String.format("%,d", Setting.COST_LABORATORY) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.BUILD_PIGPEN.ordinal() + 1))
+                + " | " + kind.Action.BUILD_PIGPEN
+                + " - " + String.format("%,d", Setting.COST_PIGPEN) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.BUY_FIELD.ordinal() + 1))
+                + " | " + kind.Action.BUY_FIELD
+                + " - " + String.format("%,d", Setting.COST_FIELD) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.FINISH_TURN.ordinal() + 1))
+                + " | " + kind.Action.FINISH_TURN);
+        list.add("Command " + String.format("%2d", (kind.Action.HARVEST.ordinal() + 1))
+                + " | " + kind.Action.HARVEST);
+        list.add("Command " + String.format("%2d", (kind.Action.INVEST_FIRE_EXTINGUISHER.ordinal() + 1))
+                + " | " + kind.Action.INVEST_FIRE_EXTINGUISHER
+                + " - " + String.format("%,d", Setting.COST_FIRE_EXTINGUISHER) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.INVEST_FIRE_PLUG.ordinal() + 1))
+                + " | " + kind.Action.INVEST_FIRE_PLUG
+                + " - " + String.format("%,d", Setting.COST_FIRE_PLUG) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.INVEST_INCUBATOR.ordinal() + 1))
+                + " | " + kind.Action.INVEST_INCUBATOR
+                + " - " + String.format("%,d", Setting.COST_INCUBATOR) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.INVEST_MICROSCOPE.ordinal() + 1))
+                + " | " + kind.Action.INVEST_MICROSCOPE
+                + " - " + String.format("%,d", Setting.COST_MICROSCOPE) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.INVEST_THRESHING_MACHINE.ordinal() + 1))
+                + " | " + kind.Action.INVEST_THRESHING_MACHINE
+                + " - " + String.format("%,d", Setting.COST_THRESHING_MACHINE) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.INVEST_TRACTOR.ordinal() + 1))
+                + " | " + kind.Action.INVEST_TRACTOR
+                + " - " + String.format("%,d", Setting.COST_TRACTOR) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.PLANT_BARLEY.ordinal() + 1))
+                + " | " + kind.Action.PLANT_BARLEY
+                + " - " + String.format("%,d", Setting.COST_BARLEY) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.PLANT_CORN.ordinal() + 1))
+                + " | " + kind.Action.PLANT_CORN
+                + " - " + String.format("%,d", Setting.COST_CORN) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.PLANT_OATS.ordinal() + 1))
+                + " | " + kind.Action.PLANT_OATS
+                + " - " + String.format("%,d", Setting.COST_OATS) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.PLANT_RICE.ordinal() + 1))
+                + " | " + kind.Action.PLANT_RICE
+                + " - " + String.format("%,d", Setting.COST_RICE) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.PLANT_WHEAT.ordinal() + 1))
+                + " | " + kind.Action.PLANT_WHEAT
+                + " - " + String.format("%,d", Setting.COST_WHEAT) + " " + Setting.CURRENCY);
+        list.add("Command " + String.format("%2d", (kind.Action.SELL_CROP.ordinal() + 1))
+                + " | " + kind.Action.SELL_CROP);
         if (list.size() < 26) {
             list.add("");
             list.add("[] - Empty field | X - Under execution");

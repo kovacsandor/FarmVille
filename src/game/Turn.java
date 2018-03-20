@@ -51,9 +51,9 @@ public class Turn {
     private void checkKeeperIsBroke() {
         int money = Model.money;
         if (money < Setting.MONEY_CRITICAL && money > Setting.MONEY_BROKE) {
-            System.out.println("You have a critical amount of money: " + money + ".");
+            System.out.println("You have a critical amount of money: " + String.format("%,d", money) + ".");
         } else if (money < Setting.MONEY_BROKE) {
-            System.out.println("You have " + money + " " + Setting.CURRENCY + ".");
+            System.out.println("You have " + String.format("%,d", money) + " " + Setting.CURRENCY + ".");
             System.out.println("You broke! GAME OVER");
             System.exit(0);
         }

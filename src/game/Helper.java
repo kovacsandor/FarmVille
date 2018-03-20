@@ -40,7 +40,8 @@ class Helper {
     static boolean isInventoryAdded(Class[] inventories) {
         boolean result = false;
         for (Class inventory : inventories) {
-            if (Model.inventories.stream().filter(i -> i.getClass() == inventory).collect(Collectors.toList()).size() > 0) {
+            if (Model.inventories.stream().filter(i ->
+                    i.getClass() == inventory).collect(Collectors.toList()).size() > 0) {
                 result = true;
                 break;
             }
@@ -108,8 +109,12 @@ class Helper {
             for (List<Field> fields : Model.board) {
                 for (Field field : fields) {
                     try {
-                        for (int x = Integer.parseInt(coordinates[0][0]) - 1; x < Integer.parseInt(coordinates[1][0]); x++) {
-                            for (int y = Integer.parseInt(coordinates[0][1]) - 1; y < Integer.parseInt(coordinates[1][1]); y++) {
+                        int coordinateX1 = Integer.parseInt(coordinates[0][0]);
+                        int coordinateX2 = Integer.parseInt(coordinates[1][0]);
+                        int coordinateY1 = Integer.parseInt(coordinates[0][1]);
+                        int coordinateY2 = Integer.parseInt(coordinates[1][1]);
+                        for (int x = coordinateX1 - 1; x < coordinateX2; x++) {
+                            for (int y = coordinateY1 - 1; y < coordinateY2; y++) {
                                 if (field.getCoordinateX() == x && field.getCoordinateY() == y) {
                                     result.add(field);
                                 }
