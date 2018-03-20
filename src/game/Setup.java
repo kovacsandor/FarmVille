@@ -11,7 +11,10 @@ import java.util.Scanner;
 public class Setup {
 
     public Setup() {
+        System.out.println("");
         System.out.println("Welcome to Farmville!");
+        System.out.println("");
+        System.out.println("https://github.com/kovacsandor/FarmVille");
         System.out.println("Enter your name and press enter to begin...");
         Scanner scanner = new Scanner(System.in);
         String name = scanner.nextLine();
